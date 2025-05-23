@@ -48,7 +48,7 @@ const About: React.FC = () => {
                 delay: 1
               }}
             >
-              <span className="text-secondary text-sm font-bold">3 Realtime Projects</span>
+              <span className="text-secondary text-sm font-bold">5+ Realtime Projects</span>
             </motion.div>
           </div>
         </FadeInSection>

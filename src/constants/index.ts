@@ -45,6 +45,13 @@ export const skills: Skill[] = [
     category: "Infrastructure",
     level: 50,
   },
+  {
+  id: "system-integration",
+  name: "System Integration",
+  icon: "Puzzle",
+  category: "Engineering",
+  level: 70,
+},
 ];
 
 export const techStack: TechItem[] = [

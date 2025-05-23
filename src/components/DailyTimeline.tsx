@@ -6,7 +6,8 @@ import { supabase } from '../lib/supabase';
 import type { Activity } from '../types/supabase';
 
 interface ActivityLogProps {
-  activity: Activity;
+  activity?: Activity;          // single activity
+  activities?: Activity[];      // multiple activities
   onClose: () => void;
 }
 
@@ -18,52 +19,67 @@ const iconMap: Record<string, React.ReactNode> = {
   Brain: <Brain className="h-5 w-5" />,
 };
 
-const ActivityLog: React.FC<ActivityLogProps> = ({ activity, onClose }) => {
+const ActivityLog: React.FC<ActivityLogProps> = ({ activity, activities, onClose }) => {
+  // Normalize to an array for rendering
+  const activityList = activity ? [activity] : (activities ?? []).slice().reverse();
+
+  if (activityList.length === 0) return null; // nothing to show
+
   return (
-    <motion.div 
-      className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+    <motion.div
+      className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       onClick={onClose}
     >
-      <motion.div 
-        className="bg-surface border-2 border-primary rounded-lg p-6 max-w-md w-full shadow-[0_0_30px_rgba(176,38,255,0.3)]"
-        initial={{ scale: 0.9, y: 20 }}
-        animate={{ scale: 1, y: 0 }}
-        exit={{ scale: 0.9, y: 20 }}
+      <div
+        className="flex flex-col gap-6 items-center justify-center w-full max-w-3xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center gap-3 mb-4">
-          <div className="bg-primary/20 p-2 rounded-lg text-primary">
-            {iconMap[activity.icon]}
-          </div>
-          <div>
-            <h3 className="font-display font-bold text-xl">{activity.title}</h3>
-            <p className="text-text-tertiary text-sm">{activity.date} • {activity.category}</p>
-          </div>
-        </div>
-        
-        <p className="text-text-secondary mb-4">{activity.description}</p>
-        
-        <div className="pt-4 border-t border-surface-light">
-          <button 
-            className="cyberpunk-button w-full"
-            onClick={onClose}
+        {activityList.map((activity, index) => (
+          <motion.div
+            key={activity.id}
+            className="bg-surface border-2 border-primary rounded-lg p-6 w-full shadow-[0_0_30px_rgba(176,38,255,0.3)]"
+            initial={{ scale: 0.9, y: 20 }}
+            animate={{ scale: 1, y: 0 }}
+            exit={{ scale: 0.9, y: 20 }}
           >
-            Close
-          </button>
-        </div>
-      </motion.div>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="bg-primary/20 p-2 rounded-lg text-primary">
+                {iconMap[activity.icon]}
+              </div>
+              <div>
+                <h3 className="font-display font-bold text-xl">{activity.title}</h3>
+                <p className="text-text-tertiary text-sm">
+                  {activity.date} • {activity.category}
+                </p>
+              </div>
+            </div>
+
+            <p className="text-text-secondary mb-4">{activity.description}</p>
+
+            {index === activityList.length - 1 && (
+              <div className="pt-4 border-t border-surface-light">
+                <button className="cyberpunk-button w-full" onClick={onClose}>
+                  Close
+                </button>
+              </div>
+            )}
+          </motion.div>
+        ))}
+      </div>
     </motion.div>
   );
 };
 
+
 const DailyTimeline: React.FC = () => {
-  const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
+  const [selectedActivities, setSelectedActivities] = useState<Activity[] | null>(null);
   const [activities, setActivities] = useState<Activity[]>([]);
   const [loading, setLoading] = useState(true);
   const [visibleCount, setVisibleCount] = useState(3);
+  const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
 
   const showMore = () => {
     setVisibleCount((prev) => Math.min(prev + 5, activities.length));
@@ -208,8 +224,8 @@ const DailyTimeline: React.FC = () => {
                   scale: 1.05,
                   boxShadow: '0 0 15px rgba(176, 38, 255, 0.3)'
                 } : {}}
-                onClick={() => day.hasActivity && setSelectedActivity(day.activity)}
-              >
+                onClick={() => setSelectedActivities(activities.filter(a => a.date === day.date))}
+                >
                 <span className={`
                   ${day.hasActivity ? 'text-primary font-bold' : ''}
                   group-hover:${day.hasActivity ? 'scale-110' : ''}
@@ -232,7 +248,9 @@ const DailyTimeline: React.FC = () => {
                   key={activity.id}
                   className="flex gap-3 p-3 bg-surface-light rounded-lg cursor-pointer hover:bg-primary/10 transition-all duration-300"
                   whileHover={{ scale: 1.02 }}
-                  onClick={() => setSelectedActivity(activity)}
+                  onClick={() => {
+                    setSelectedActivity(activity);
+                  }}
                 >
                   <div className="bg-primary/20 p-2 rounded-lg text-primary self-start">
                     {iconMap[activity.icon]}
@@ -260,12 +278,18 @@ const DailyTimeline: React.FC = () => {
       </FadeInSection>
       
       <AnimatePresence>
-        {selectedActivity && (
-          <ActivityLog 
-            activity={selectedActivity} 
-            onClose={() => setSelectedActivity(null)} 
-          />
-        )}
+      {selectedActivity && (
+        <ActivityLog 
+          activity={selectedActivity} 
+          onClose={() => setSelectedActivity(null)} 
+        />
+      )}
+      {selectedActivities && (
+        <ActivityLog 
+          activities={selectedActivities} 
+          onClose={() => setSelectedActivities(null)} 
+        />
+      )}
       </AnimatePresence>
 
     </section>
