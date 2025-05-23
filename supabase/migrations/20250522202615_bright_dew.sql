@@ -103,4 +103,52 @@ CREATE POLICY "Allow authenticated users to read messages"
   TO authenticated
   USING (true);
 
--- 
+-- experience Table
+create table experiences (
+  id uuid primary key default gen_random_uuid(),
+  title text not null,
+  company text not null,
+  location text not null,
+  description text not null,
+  date text not null,
+  icon text not null,
+  iconBg text not null,
+  created_at timestamp with time zone default timezone('utc'::text, now())
+);
+
+alter table experiences enable row level security;
+
+create policy "Allow public read access to experiences"
+  on experiences
+  for select
+  to public
+  using (true);
+
+create policy "Allow authenticated users to manage experiences"
+  on experiences
+  using (auth.role() = 'authenticated');
+
+-- tech_stacks Table
+create table tech_stacks (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  icon text not null,
+  category text not null check (category in ('language', 'library', 'framework', 'tool')),
+  img text,  -- optional
+  created_at timestamp with time zone default timezone('utc'::text, now())
+);
+
+alter table tech_stacks enable row level security;
+
+create policy "Allow public read access to tech_stacks"
+  on tech_stacks
+  for select
+  to public
+  using (true);
+
+create policy "Allow authenticated users to manage tech_stacks"
+  on tech_stacks
+  using (auth.role() = 'authenticated');
+
+
+
