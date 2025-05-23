@@ -41,7 +41,7 @@ export const skills: Skill[] = [
   {
     id: "devops",
     name: "DevOps",
-    icon: "Settings",
+    icon: "Settings2",
     category: "Infrastructure",
     level: 50,
   },

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { skills } from '../constants';
 import FadeInSection from './ui/FadeInSection';
 import { Brain, Code, Cloud, BarChart, Shield, GitMerge } from 'lucide-react';
+import { Cpu, Wrench, Puzzle, Settings2, Box, Zap, MessageCircle, Camera, Server, CreditCard, Link2, Repeat } from "lucide-react";
 
 const iconMap: Record<string, React.ReactNode> = {
   Code: <Code className="h-10 w-10" />,
@@ -11,7 +12,20 @@ const iconMap: Record<string, React.ReactNode> = {
   BarChart: <BarChart className="h-10 w-10" />,
   Cloud: <Cloud className="h-10 w-10" />,
   GitMerge: <GitMerge className="h-10 w-10" />,
+  Cpu: <Cpu className="h-10 w-10" />,              // Full Stack Automation
+  Wrench: <Wrench className="h-10 w-10" />,        // Applied Software Engineering
+  Puzzle: <Puzzle className="h-10 w-10" />,        // System Integration
+  Settings2: <Settings2 className="h-10 w-10" />,  // Automation Engineering
+  Box: <Box className="h-10 w-10" />,              // Product Engineering
+  Zap: <Zap className="h-10 w-10" />,              // AI Automation
+  MessageCircle: <MessageCircle className="h-10 w-10" />, // Bot Development
+  Camera: <Camera className="h-10 w-10" />,        // Computer Vision
+  Server: <Server className="h-10 w-10" />,        // Backend Dev
+  CreditCard: <CreditCard className="h-10 w-10" />,// Payment Integration
+  Link2: <Link2 className="h-10 w-10" />,          // API Integration
+  Repeat: <Repeat className="h-10 w-10" />         // Automation Flows
 };
+
 
 const Skills: React.FC = () => {
   return (
