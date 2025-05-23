@@ -14,7 +14,6 @@ const About: React.FC = () => {
                 alt="Profile" 
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-primary/40 to-transparent opacity-70" />
             </div>
             
             <div className="absolute -bottom-6 -right-6 w-40 h-40 border-2 border-secondary rounded-lg hidden lg:block" />
