@@ -7,11 +7,13 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 const CATEGORY_LABELS = {
   language: 'Languages',
   library: 'Libraries',
-  framework: 'Frameworks'
+  framework: 'Frameworks',
+  tool: 'Tools',
+  hardware: 'hardware',
 };
 
 const TechStack: React.FC = () => {
-  const [activeCategory, setActiveCategory] = useState<'language' | 'library' | 'framework'>('language');
+  const [activeCategory, setActiveCategory] = useState<'language' | 'library' | 'framework' | 'tool' | 'hardware' >('language');
   const [expanded, setExpanded] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   
@@ -41,7 +43,7 @@ const TechStack: React.FC = () => {
                   : 'bg-surface-light text-text-secondary hover:bg-primary/20'
               }`}
               onClick={() => {
-                setActiveCategory(category as 'language' | 'library' | 'framework');
+                setActiveCategory(category as 'language' | 'library' | 'framework' | 'tool');
                 setExpanded(false);
               }}
             >
@@ -94,11 +96,15 @@ const TechStack: React.FC = () => {
                   >
                     <div className="w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
                       <img 
-                        src={`https://raw.githubusercontent.com/devicons/devicon/master/icons/${tech.name.toLowerCase()}/${tech.name.toLowerCase()}-original.svg`}
+                        src={`https://raw.githubusercontent.com/devicons/devicon/master/icons/${tech.icon.toLowerCase()}/${tech.icon.toLowerCase()}-original.svg`}
                         alt={tech.name}
                         className="w-12 h-12"
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).src = `https://via.placeholder.com/48/B026FF/FFFFFF/?text=${tech.name[0]}`;
+                        onError={(e1) => {
+                          e1.target.onerror = (e2) => {
+                            e2.target.onerror = null;
+                            e2.target.src = tech.img || 'https://via.placeholder.com/150';
+                          };
+                          e1.target.src = tech.img;
                         }}
                       />
                     </div>

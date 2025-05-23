@@ -102,3 +102,5 @@ CREATE POLICY "Allow authenticated users to read messages"
   FOR SELECT
   TO authenticated
   USING (true);
+
+-- 

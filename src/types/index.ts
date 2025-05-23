@@ -14,7 +14,8 @@ export interface Skill {
 export interface TechItem {
   name: string;
   icon: string;
-  category: 'language' | 'library' | 'framework';
+  category: 'language' | 'library' | 'framework' | 'tool' | 'hardware';
+  img?: string;
 }
 
 export interface Project {

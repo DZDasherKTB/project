@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { projects } from '../constants';
 import FadeInSection from './ui/FadeInSection';
 import { ExternalLink, Github } from 'lucide-react';
+import { supabase } from '../lib/supabase';
+import type { Project } from '../types/supabase';
 
 interface ProjectCardProps {
-  project: typeof projects[0];
+  project: Project;
   index: number;
 }
 
@@ -23,7 +24,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
         <div className="absolute inset-0 z-10 bg-gradient-to-t from-background via-background/80 to-transparent opacity-80" />
         
         <img 
-          src={project.imageUrl} 
+          src={project.image_url} 
           alt={project.title}
           className="w-full h-full object-cover absolute inset-0 transition-transform duration-500 group-hover:scale-110"
         />
@@ -52,9 +53,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
             animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 20 }}
             transition={{ duration: 0.3 }}
           >
-            {project.demoLink && (
+            {project.demo_link && (
               <a 
-                href={project.demoLink} 
+                href={project.demo_link} 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="cyberpunk-button py-2 flex items-center gap-2"
@@ -64,9 +65,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
               </a>
             )}
             
-            {project.codeLink && (
+            {project.code_link && (
               <a 
-                href={project.codeLink} 
+                href={project.code_link} 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="cyberpunk-button py-2 border-secondary flex items-center gap-2 hover:bg-secondary/20"
@@ -83,15 +84,42 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
 };
 
 const Projects: React.FC = () => {
+  const [loading, setLoading] = useState(true);
+  const [projects, setProjects] = useState<Project[]>([]);
   const [showAll, setShowAll] = useState(false);
-  const displayedProjects = showAll ? projects : projects.filter(p => p.featured).slice(0, 5);
-  
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      const { data, error } = await supabase
+        .from('projects')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching projects:', error);
+      } else {
+        setProjects(data || []);
+      }
+      setLoading(false);
+    };
+
+    fetchProjects();
+  }, []);
+
+  if (loading) {
+    return <div className="text-center">Loading...</div>;
+  }
+
+  const displayedProjects = showAll
+    ? projects
+    : projects.filter((p) => p.featured).slice(0, 5);
+
   return (
     <section id="projects" className="section-container">
       <FadeInSection>
         <h2 className="section-title neon-text">Projects</h2>
       </FadeInSection>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
         <AnimatePresence>
           {displayedProjects.map((project, index) => (
@@ -99,13 +127,10 @@ const Projects: React.FC = () => {
           ))}
         </AnimatePresence>
       </div>
-      
+
       {!showAll && projects.length > 5 && (
         <div className="flex justify-center mt-12">
-          <button
-            className="cyberpunk-button"
-            onClick={() => setShowAll(true)}
-          >
+          <button className="cyberpunk-button" onClick={() => setShowAll(true)}>
             Show More
           </button>
         </div>

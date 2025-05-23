@@ -26,3 +26,23 @@ export interface Message {
   message: string;
   created_at: string;
 }
+
+export interface TechStack {
+  id: string;
+  name: string;
+  icon: string;
+  category: 'language' | 'library' | 'framework' | 'tool';
+  img?: string;
+  created_at: string;
+}
+export interface Experience {
+  id: string;
+  title: string;
+  company: string;
+  location: string;
+  description: string;
+  date: string;
+  icon: string;
+  iconBg: string;
+  created_at: string;
+}

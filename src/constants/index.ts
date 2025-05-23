@@ -48,19 +48,57 @@ export const skills: Skill[] = [
 ];
 
 export const techStack: TechItem[] = [
-  { name: "Python", icon: "Python", category: "language" },
-  { name: "JavaScript", icon: "JavaScript", category: "language" },
-  { name: "TypeScript", icon: "TypeScript", category: "language" },
-  { name: "C++", icon: "Cplusplus", category: "language" },
-  { name: "React", icon: "React", category: "library" },
-  { name: "TensorFlow", icon: "TensorFlow", category: "library" },
-  { name: "PyTorch", icon: "PyTorch", category: "library" },
-  { name: "Pandas", icon: "Pandas", category: "library" },
-  { name: "Node.js", icon: "NodeJs", category: "framework" },
-  { name: "Next.js", icon: "Nextjs", category: "framework" },
-  { name: "Django", icon: "Django", category: "framework" },
-  { name: "Flask", icon: "Flask", category: "framework" },
-];
+    { name: "Python", icon: "Python", category: "language" },
+    { name: "JavaScript", icon: "JavaScript", category: "language" },
+    { name: "C++", icon: "Cplusplus", category: "language" },
+    { name: "C", icon: "C", category: "language" },
+    { name: "HTML", icon: "HTML5", category: "language" },
+    { name: "CSS", icon: "CSS3", category: "language" },
+    { name: "TypeScript", icon: "TypeScript", category: "language" },
+    { name: "Java", icon: "Java", category: "language" },
+
+    { name: "React Native", icon: "React", category: "framework" },
+    { name: "React", icon: "React", category: "framework" },
+    { name: "Node.js", icon: "NodeJs", category: "framework" },
+    { name: "Next.js", icon: "Nextjs", category: "framework" },
+    { name: "Django", icon: "Django", category: "framework", img: "https://www.svgrepo.com/show/373554/django.svg" },
+    { name: "Flask", icon: "Flask", category: "framework" },
+    { name: "Express.js", icon: "Express", category: "framework" },
+    { name: "FastAPI", icon: "Fastapi", category: "framework" },
+
+    { name: "PyTorch", icon: "PyTorch", category: "library" },
+    { name: "Pandas", icon: "Pandas", category: "library" },
+    { name: "NumPy", icon: "NumPy", category: "library" },
+    { name: "Scikit-learn", icon: "ScikitLearn", category: "library" },
+    { name: "OpenCV", icon: "OpenCV", category: "library" },
+    { name: "Matplotlib", icon: "matplotlib", category: "library" },
+    { name: "Requests", icon: "requests", category: "library", img: "https://www.svgrepo.com/show/288308/library.svg" },
+    { name: "Selenium", icon: "selenium", category: "library" },
+    { name: "BeautifulSoup", icon: "beautifulsoup", category: "library" , img: "https://www.svgrepo.com/show/288308/library.svg"}, // no official icon, custom needed
+    { name: "Tailwind CSS", icon: "TailwindCSS", category: "library" },
+
+    { name: "Git", icon: "git", category: "tool" },
+    { name: "GitHub", icon: "github", category: "tool" },
+    { name: "Android Studio", icon: "androidstudio", category: "tool", img:"https://blog.savoirfairelinux.com/fr-ca/wp-content/uploads/2017/10/Android_Studio_icon.svg-768x768.png" }, // no official icon, custom needed
+    { name: "Cutter", icon: "cutter", category: "tool" , img: "https://d4.alternativeto.net/qrrgJKkn181n-p2ipYljQqspkZ4I6jGtufTJSAC2CRU/rs:fit:40:40:0/g:ce:0:0/exar:1/YWJzOi8vZGlzdC9pY29ucy9jdXR0ZXJfMjI4MDc0LnN2Zw.svg"},            // no official icon, custom needed
+    { name: "Ghidra", icon: "ghidra", category: "tool", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Ghidra_logo.svg/768px-Ghidra_logo.svg.png?20220727174502" },            // no official icon, custom needed
+    { name: "Burp Suite", icon: "burpsuite", category: "tool", img: "https://www.svgrepo.com/show/454430/burpsuite-security-software.svg" },     // no official icon, custom needed
+    { name: "Wireshark", icon: "wireshark", category: "tool",img:"https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Wireshark_icon.svg/150px-Wireshark_icon.svg.png?20070521080724" },      // no official icon, custom needed
+    { name: "Kali Linux", icon: "kalilinux", category: "tool",img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Kali-dragon-icon.svg/640px-Kali-dragon-icon.svg.png" },     // no official icon, custom needed
+    { name: "PostgreSQL", icon: "postgresql", category: "tool" },
+    { name: "MongoDB", icon: "mongodb", category: "tool" },
+    { name: "MySQL", icon: "mysql", category: "tool" },
+    { name: "AWS", icon: "amazonwebservices", category: "tool", img: "https://raw.githubusercontent.com/devicons/devicon/refs/heads/master/icons/amazonwebservices/amazonwebservices-plain-wordmark.svg" },
+    { name: "Azure", icon: "azure", category: "tool" },
+    { name: "Supabase", icon: "supabase", category: "tool" },       
+    { name: "Docker", icon: "docker", category: "tool" },
+    { name: "Clerk", icon: "clerk", category: "tool", img: "/images/clerk.svg"},    
+    { name: "Neon", icon: "neon", category: "tool", img: "/images/neon.png"},           
+    { name: "Figma", icon: "figma", category: "tool" },
+    { name: "Postman", icon: "postman", category: "tool" },
+    { name: "Jupyter Notebook", icon: "jupyter", category: "tool" },
+    { name: "VS Code", icon: "vscode", category: "tool" },
+    ];
 
 export const projects: Project[] = [
   {
