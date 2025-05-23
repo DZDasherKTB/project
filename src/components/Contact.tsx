@@ -95,8 +95,8 @@ const Contact: React.FC = () => {
                 <div className="bg-primary/20 p-2 rounded-lg text-primary">
                   <Mail className="h-5 w-5" />
                 </div>
-                <a href="mailto:email@example.com" className="text-text-secondary hover:text-primary transition-colors">
-                  email@example.com
+                <a href="mailto:dashpreetsinghhanda@gmail.com" className="text-text-secondary hover:text-primary transition-colors">
+                  dashpreetsinghhanda@gmail.com
                 </a>
               </div>
               <div className="flex items-center gap-3">
@@ -104,7 +104,7 @@ const Contact: React.FC = () => {
                   <Terminal className="h-5 w-5" />
                 </div>
                 <span className="text-text-secondary">
-                  Based in San Francisco, CA
+                  Based in Jammu, Jammu and Kashmir, India
                 </span>
               </div>
             </div>

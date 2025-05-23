@@ -63,7 +63,12 @@ const DailyTimeline: React.FC = () => {
   const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
   const [activities, setActivities] = useState<Activity[]>([]);
   const [loading, setLoading] = useState(true);
-  
+  const [visibleCount, setVisibleCount] = useState(3);
+
+  const showMore = () => {
+    setVisibleCount((prev) => Math.min(prev + 5, activities.length));
+  };
+
   useEffect(() => {
     const fetchActivities = async () => {
       try {
@@ -83,24 +88,47 @@ const DailyTimeline: React.FC = () => {
     
     fetchActivities();
   }, []);
+
+  const [currentMonth, setCurrentMonth] = useState(() => {
+    const now = new Date();
+    return new Date(now.getFullYear(), now.getMonth(), 1);
+  });
+
+  const goToPreviousMonth = () => {
+    setCurrentMonth(prev => new Date(prev.getFullYear(), prev.getMonth() - 1, 1));
+  };
   
+  const goToNextMonth = () => {
+    setCurrentMonth(prev => new Date(prev.getFullYear(), prev.getMonth() + 1, 1));
+  };
   // Group activities by date for calendar view
   const activityDates = activities.reduce<Record<string, Activity>>((acc, activity) => {
     acc[activity.date] = activity;
     return acc;
   }, {});
+
+  // Format date to YYYY-MM-DD
+  function formatDateToLocalYYYYMMDD(date: Date) {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
   
   // Generate calendar days
   const generateCalendarDays = () => {
     const days = [];
     const today = new Date();
+    const year = currentMonth.getFullYear();
+    const month = currentMonth.getMonth();
+
     
     // Generate days for current month
-    const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
     
     for (let i = 1; i <= daysInMonth; i++) {
-      const date = new Date(today.getFullYear(), today.getMonth(), i);
-      const dateString = date.toISOString().split('T')[0];
+      const date = new Date(year, month, i);
+      const dateString = formatDateToLocalYYYYMMDD(date);
       const hasActivity = activityDates[dateString] !== undefined;
       
       days.push({
@@ -108,7 +136,7 @@ const DailyTimeline: React.FC = () => {
         date: dateString,
         hasActivity,
         activity: hasActivity ? activityDates[dateString] : null,
-        isToday: i === today.getDate()
+        isToday: date.toDateString() === today.toDateString()
       });
     }
     
@@ -128,15 +156,24 @@ const DailyTimeline: React.FC = () => {
           <div className="mb-6">
             <div className="flex items-center justify-between">
               <h3 className="text-2xl font-display font-bold">
-                {new Date().toLocaleString('default', { month: 'long', year: 'numeric' })}
+                {currentMonth.toLocaleString('default', { month: 'long', year: 'numeric' })}
               </h3>
               <div className="flex gap-2">
-                <button className="p-2 bg-surface-light rounded hover:bg-primary/20 transition-colors">
+                <button 
+                  className="p-2 bg-surface-light rounded hover:bg-primary/20 transition-colors"
+                  onClick={goToPreviousMonth}
+                >
+                  {/* Left Arrow */}
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
                 </button>
-                <button className="p-2 bg-surface-light rounded hover:bg-primary/20 transition-colors">
+
+                <button 
+                  className="p-2 bg-surface-light rounded hover:bg-primary/20 transition-colors"
+                  onClick={goToNextMonth}
+                >
+                  {/* Right Arrow */}
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
                   </svg>
@@ -153,7 +190,7 @@ const DailyTimeline: React.FC = () => {
             ))}
             
             {/* Empty slots for days before the month starts */}
-            {Array(new Date(2023, 4, 1).getDay()).fill(null).map((_, i) => (
+            {Array(new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1).getDay()).fill(null).map((_, i) => (
               <div key={`empty-${i}`} className="aspect-square rounded-lg" />
             ))}
             
@@ -190,8 +227,8 @@ const DailyTimeline: React.FC = () => {
           <div className="mt-8 border-t border-surface-light pt-6">
             <h4 className="text-xl font-display font-bold mb-4">Recent Activities</h4>
             <div className="space-y-3">
-              {activities.slice(0, 3).map((activity) => (
-                <motion.div 
+              {activities.slice(0, visibleCount).map((activity) => (
+                <motion.div
                   key={activity.id}
                   className="flex gap-3 p-3 bg-surface-light rounded-lg cursor-pointer hover:bg-primary/10 transition-all duration-300"
                   whileHover={{ scale: 1.02 }}
@@ -202,15 +239,22 @@ const DailyTimeline: React.FC = () => {
                   </div>
                   <div>
                     <h5 className="font-display font-bold">{activity.title}</h5>
-                    <p className="text-text-tertiary text-sm">{activity.date} • {activity.category}</p>
+                    <p className="text-text-tertiary text-sm">
+                      {activity.date} • {activity.category}
+                    </p>
                   </div>
                 </motion.div>
               ))}
             </div>
-            
-            <button className="cyberpunk-button w-full mt-4">
-              View All Activities
-            </button>
+
+            {visibleCount < activities.length && (
+              <button
+                className="cyberpunk-button w-full mt-4"
+                onClick={showMore}
+              >
+                View More Activities
+              </button>
+            )}
           </div>
         </div>
       </FadeInSection>
@@ -223,6 +267,7 @@ const DailyTimeline: React.FC = () => {
           />
         )}
       </AnimatePresence>
+
     </section>
   );
 };

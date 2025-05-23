@@ -12,7 +12,7 @@ const Footer: React.FC = () => {
           <div className="flex items-center gap-2 mb-6 md:mb-0">
             <Cpu className="text-primary h-6 w-6" />
             <span className="font-display text-xl font-bold neon-text">
-              Cyber<span className="text-secondary">Dev</span>
+              Dashpreet<span className="text-secondary"> Singh</span>
             </span>
           </div>
           
@@ -32,7 +32,7 @@ const Footer: React.FC = () => {
           </div>
           
           <p className="text-text-tertiary text-sm text-center md:text-right">
-            &copy; {currentYear} CyberDev. All rights reserved.
+            &copy; {currentYear} Dashpreet Singh. All rights reserved.
           </p>
         </div>
         

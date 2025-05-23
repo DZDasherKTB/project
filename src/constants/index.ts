@@ -196,25 +196,25 @@ export const socials: Social[] = [
   {
     id: "github",
     name: "GitHub",
-    url: "https://github.com/username",
+    url: "https://github.com/DZ_DasherKTB",
     icon: "Github",
   },
   {
     id: "twitter",
     name: "Twitter",
-    url: "https://twitter.com/username",
+    url: "https://twitter.com/DZ_DasherKTB",
     icon: "Twitter",
   },
   {
     id: "instagram",
     name: "Instagram",
-    url: "https://instagram.com/username",
+    url: "https://instagram.com/dz_dasherktb",
     icon: "Instagram",
   },
   {
     id: "email",
     name: "Email",
-    url: "mailto:email@example.com",
+    url: "mailto:dashpreetsinghhanda@example.com",
     icon: "Mail",
   },
 ];
