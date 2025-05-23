@@ -32,7 +32,7 @@ const About: React.FC = () => {
                 ease: "easeInOut" 
               }}
             >
-              <span className="text-primary text-sm font-bold">5+ Years Experience</span>
+              <span className="text-primary text-sm font-bold">1 Years Experience</span>
             </motion.div>
             
             <motion.div 
@@ -48,7 +48,7 @@ const About: React.FC = () => {
                 delay: 1
               }}
             >
-              <span className="text-secondary text-sm font-bold">20+ Projects</span>
+              <span className="text-secondary text-sm font-bold">3 Realtime Projects</span>
             </motion.div>
           </div>
         </FadeInSection>
@@ -70,11 +70,11 @@ const About: React.FC = () => {
           <div className="grid grid-cols-2 gap-4 mt-8">
             <div className="cyberpunk-card">
               <h3 className="text-lg font-display font-bold mb-1">Education</h3>
-              <p className="text-text-secondary">MSc in Computer Science, Stanford University</p>
+              <p className="text-text-secondary">B.Tech in Computer Science, Indian Institute of Technology, Jammu</p>
             </div>
             <div className="cyberpunk-card">
               <h3 className="text-lg font-display font-bold mb-1">Location</h3>
-              <p className="text-text-secondary">San Francisco, California</p>
+              <p className="text-text-secondary">Jammu, Jammu and Kashmir, India</p>
             </div>
           </div>
         </FadeInSection>

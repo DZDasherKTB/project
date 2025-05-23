@@ -42,7 +42,7 @@ const Hero: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            I'm <span className="neon-text">John Doe</span>
+            I'm <span className="neon-text">Dashpreet Singh</span>
           </motion.h1>
 
           <motion.p 
@@ -51,7 +51,7 @@ const Hero: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            A <span className="text-primary">Full Stack Developer</span> and <span className="text-secondary">Machine Learning Engineer</span> building innovative solutions to complex problems.
+            A <span className="text-primary">Full Stack Developer</span> and <span className="text-secondary">Deep Learning Engineer</span> building innovative solutions to complex problems.
           </motion.p>
 
           <motion.div
