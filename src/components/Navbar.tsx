@@ -37,7 +37,7 @@ const Navbar: React.FC = () => {
           >
             <Cpu className="text-primary h-8 w-8" />
             <span className="font-display text-xl font-bold neon-text">
-              Cyber<span className="text-secondary">Dev</span>
+              Dashpreet<span className="text-secondary"> Singh</span>
             </span>
           </Link>
 
@@ -51,7 +51,7 @@ const Navbar: React.FC = () => {
                   duration={500}
                   spy={true}
                   activeClass="text-primary after:scale-x-100"
-                  className="font-display text-sm hover:text-primary transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-primary after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100"
+                  className="font-display text-sm hover:cursor-pointer hover:text-primary transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-primary after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100"
                   onClick={() => setActive(link.title)}
                 >
                   {link.title}
