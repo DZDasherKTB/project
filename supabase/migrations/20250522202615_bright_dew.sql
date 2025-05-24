@@ -90,6 +90,7 @@ CREATE TABLE IF NOT EXISTS messages (
 );
 
 ALTER TABLE messages ENABLE ROW LEVEL SECURITY;
+ALTER TABLE messages ADD COLUMN email text;
 
 CREATE POLICY "Allow public to create messages"
   ON messages

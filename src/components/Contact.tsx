@@ -30,47 +30,62 @@ const Contact: React.FC = () => {
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Check honeypot
+  
     if (formData.honeypot) {
       setError('Invalid submission');
       return;
     }
-    
+  
     setLoading(true);
     setError(null);
-    
+  
     try {
-      // Save to Supabase
-      const { error: dbError } = await supabase
-        .from('messages')
-        .insert([{
+      // 🔐 Check login
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        const { error: signInError } = await supabase.auth.signInWithOAuth({
+          provider: 'google',
+        });
+        if (signInError) throw signInError;
+  
+        setError("Please log in with Google to continue.");
+        setLoading(false);
+        return;
+      }
+  
+      const user = session.user;
+  
+      // ✅ Save to Supabase
+      const { error: dbError } = await supabase.from('messages').insert([
+        {
           name: formData.name,
           message: formData.message,
-        }]);
-      
+          email: user.email, // optionally log sender email
+        }
+      ]);
       if (dbError) throw dbError;
-      
-      // Send email notification via Edge Function
+  
+      // 📧 Trigger Edge Function to send email
       const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-contact-email`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          'Authorization': `Bearer ${session.access_token}`, // 🧠 secure email trigger
         },
         body: JSON.stringify({
           name: formData.name,
           message: formData.message,
+          email: user.email,
         }),
       });
-      
+  
       if (!response.ok) throw new Error('Failed to send email notification');
-      
+  
       setSubmitted(true);
       setFormData({ name: '', message: '', honeypot: '' });
     } catch (err) {
-      setError('Failed to send message. Please try again.');
-      console.error('Contact form error:', err);
+      console.error('Error:', err);
+      setError('Something went wrong. Please try again.');
     } finally {
       setLoading(false);
     }
