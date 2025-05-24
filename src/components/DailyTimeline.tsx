@@ -4,6 +4,7 @@ import FadeInSection from './ui/FadeInSection';
 import { Brain, Cloud, Code, FileText, Shield } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import type { Activity } from '../types/supabase';
+import * as Icons from 'lucide-react';
 
 interface ActivityLogProps {
   activity?: Activity;          // single activity
@@ -11,13 +12,18 @@ interface ActivityLogProps {
   onClose: () => void;
 }
 
-const iconMap: Record<string, React.ReactNode> = {
-  FileText: <FileText className="h-5 w-5" />,
-  Code: <Code className="h-5 w-5" />,
-  Cloud: <Cloud className="h-5 w-5" />,
-  Shield: <Shield className="h-5 w-5" />,
-  Brain: <Brain className="h-5 w-5" />,
-};
+
+function ActivityIcon({ iconName }: { iconName: string }) {
+  // Convert e.g. 'brain' to 'Brain', 'file-text' to 'FileText'
+  const pascalCaseName = iconName
+    .split(/[-_ ]+/)
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join('');
+
+  const Icon = Icons[pascalCaseName];
+  return Icon ? <Icon className="h-5 w-5 text-primary" /> : <span className="text-text-secondary">?</span>;
+}
+
 
 const ActivityLog: React.FC<ActivityLogProps> = ({ activity, activities, onClose }) => {
   // Normalize to an array for rendering
@@ -47,7 +53,7 @@ const ActivityLog: React.FC<ActivityLogProps> = ({ activity, activities, onClose
           >
             <div className="flex items-center gap-3 mb-4">
               <div className="bg-primary/20 p-2 rounded-lg text-primary">
-                {iconMap[activity.icon]}
+              <ActivityIcon iconName={activity.icon} />
               </div>
               <div>
                 <h3 className="font-display font-bold text-xl">{activity.title}</h3>
@@ -253,7 +259,7 @@ const DailyTimeline: React.FC = () => {
                   }}
                 >
                   <div className="bg-primary/20 p-2 rounded-lg text-primary self-start">
-                    {iconMap[activity.icon]}
+                  <ActivityIcon iconName={activity.icon} />
                   </div>
                   <div>
                     <h5 className="font-display font-bold">{activity.title}</h5>
