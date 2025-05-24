@@ -13,7 +13,7 @@ import CogwheelEffect from './components/ui/CogwheelEffect';
 import FloatingImages from './components/ui/FloatingImages';
 function App() {
   useEffect(() => {
-    document.title = "CyberDev Portfolio";
+    document.title = "Dashpreet Singh | Portfolio";
   }, []);
 
   try {
