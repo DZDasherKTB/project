@@ -12,28 +12,21 @@ import Footer from './components/Footer';
 import CogwheelEffect from './components/ui/CogwheelEffect';
 import FloatingImages from './components/ui/FloatingImages';
 import AuthPopup from './components/AuthPopup';
-import { supabase } from './lib/supabase';
+import { useState } from 'react';
+import { supabase } from './lib/supabase'; // ✅ Make sure this path is correct
 
 function App() {
+  const [showPopup, setShowPopup] = useState(false);
+
   useEffect(() => {
     document.title = "Dashpreet Singh | Portfolio";
 
-    // ✅ Manually restore session after OAuth redirect
-    const initSession = async () => {
-      const { data, error } = await supabase.auth.getSession();
-      if (data.session) {
-        console.log("✅ Session restored:", data.session.user?.email);
-      } else {
-        console.log("❌ No session found or error:", error);
-      }
-    };
-
-    initSession();
-
-    // 🔄 Listen for auth changes
+    // ✅ Supabase session restoration on OAuth redirect
     const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
       console.log("Auth event:", event);
       if (event === "SIGNED_IN") {
+        setShowPopup(true);
+        setTimeout(() => setShowPopup(false), 3000);
         console.log("User signed in:", session?.user?.email);
       }
     });
@@ -47,7 +40,7 @@ function App() {
     return (
       <div className="min-h-screen bg-background text-text-primary overflow-x-hidden">
         <Navbar />
-        <AuthPopup />
+        <AuthPopup show={showPopup} />
         <CogwheelEffect />
         <FloatingImages />
 
