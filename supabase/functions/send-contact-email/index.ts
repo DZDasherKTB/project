@@ -20,7 +20,15 @@ serve(async (req) => {
     const authHeader = req.headers.get('Authorization')
     const token = authHeader?.replace('Bearer ', '')
 
-    // Verify and get the user
+    // Reject if no token provided
+    if (!token) {
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized - no token provided' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
+    // Verify token and get user
     const {
       data: { user },
       error,
@@ -28,21 +36,19 @@ serve(async (req) => {
 
     if (error || !user) {
       return new Response(
-        JSON.stringify({ error: 'Unauthorized' }),
+        JSON.stringify({ error: 'Unauthorized - invalid token' }),
         { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
 
     const { name, message } = await req.json()
 
-    // Here: insert into DB or log
     console.log(`New message from ${name} (${user.email}): ${message}`)
 
-    // Optionally: insert into Supabase
     await supabase.from('messages').insert({
       name,
       message,
-      email: user.email
+      email: user.email,
     })
 
     return new Response(
