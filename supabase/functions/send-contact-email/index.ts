@@ -8,7 +8,7 @@ const corsHeaders = {
 
 const supabase = createClient(
   Deno.env.get('SUPABASE_URL')!,
-  Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')! // secure server-side key
+  Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')! // Secure server-side key
 )
 
 serve(async (req) => {
@@ -20,15 +20,14 @@ serve(async (req) => {
     const authHeader = req.headers.get('Authorization')
     const token = authHeader?.replace('Bearer ', '')
 
-    // Reject if no token provided
     if (!token) {
       return new Response(
-        JSON.stringify({ error: 'Unauthorized - no token provided' }),
+        JSON.stringify({ error: 'Missing token' }),
         { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
 
-    // Verify token and get user
+    // Verify and get the user
     const {
       data: { user },
       error,
@@ -36,24 +35,37 @@ serve(async (req) => {
 
     if (error || !user) {
       return new Response(
-        JSON.stringify({ error: 'Unauthorized - invalid token' }),
+        JSON.stringify({ error: 'Unauthorized' }),
         { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
 
     const { name, message } = await req.json()
 
+    if (!name || !message) {
+      return new Response(
+        JSON.stringify({ error: 'Missing name or message' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
     console.log(`New message from ${name} (${user.email}): ${message}`)
 
-    await supabase.from('messages').insert({
-      name,
-      message,
-      email: user.email,
-    })
+    const { error: insertError } = await supabase
+      .from('messages')
+      .insert({ name, message, email: user.email })
+
+    if (insertError) {
+      return new Response(
+        JSON.stringify({ error: insertError.message }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
 
     return new Response(
       JSON.stringify({ success: true }),
       {
+        status: 200,
         headers: {
           ...corsHeaders,
           'Content-Type': 'application/json',

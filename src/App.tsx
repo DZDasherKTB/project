@@ -11,9 +11,24 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import CogwheelEffect from './components/ui/CogwheelEffect';
 import FloatingImages from './components/ui/FloatingImages';
+
+import { supabase } from './lib/supabase'; // ✅ Make sure this path is correct
+
 function App() {
   useEffect(() => {
     document.title = "Dashpreet Singh | Portfolio";
+
+    // ✅ Supabase session restoration on OAuth redirect
+    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log("Auth event:", event);
+      if (event === "SIGNED_IN") {
+        console.log("User signed in:", session?.user?.email);
+      }
+    });
+
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
   }, []);
 
   try {
@@ -22,7 +37,7 @@ function App() {
         <Navbar />
         <CogwheelEffect />
         <FloatingImages />
-        
+
         <main>
           <Hero />
           <Skills />
@@ -33,7 +48,7 @@ function App() {
           <Experience />
           <Contact />
         </main>
-        
+
         <Footer />
       </div>
     );
@@ -42,6 +57,5 @@ function App() {
     return <div style={{ color: 'red', padding: '2rem' }}>App crashed — check console</div>;
   }
 }
-
 
 export default App;
