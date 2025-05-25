@@ -11,8 +11,8 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import CogwheelEffect from './components/ui/CogwheelEffect';
 import FloatingImages from './components/ui/FloatingImages';
-
-import { supabase } from './lib/supabase'; // ✅ Make sure this path is correct
+import AuthPopup from './components/AuthPopup';
+import { supabase } from './lib/supabase';
 
 function App() {
   useEffect(() => {
@@ -35,6 +35,7 @@ function App() {
     return (
       <div className="min-h-screen bg-background text-text-primary overflow-x-hidden">
         <Navbar />
+        <AuthPopup />
         <CogwheelEffect />
         <FloatingImages />
 
