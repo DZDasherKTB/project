@@ -18,7 +18,19 @@ function App() {
   useEffect(() => {
     document.title = "Dashpreet Singh | Portfolio";
 
-    // ✅ Supabase session restoration on OAuth redirect
+    // ✅ Manually restore session after OAuth redirect
+    const initSession = async () => {
+      const { data, error } = await supabase.auth.getSession();
+      if (data.session) {
+        console.log("✅ Session restored:", data.session.user?.email);
+      } else {
+        console.log("❌ No session found or error:", error);
+      }
+    };
+
+    initSession();
+
+    // 🔄 Listen for auth changes
     const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
       console.log("Auth event:", event);
       if (event === "SIGNED_IN") {
