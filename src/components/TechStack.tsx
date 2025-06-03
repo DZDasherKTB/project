@@ -89,13 +89,13 @@ const TechStack: React.FC = () => {
             {/* Scroll Buttons */}
             <button
               onClick={() => scroll('left')}
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-surface/80 p-2 rounded-full backdrop-blur-sm hover:bg-primary/20 transition-colors"
-            >
+              className={`${expanded ? "hidden" : ""} absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-surface/80 p-2 rounded-full backdrop-blur-sm hover:bg-primary/20 transition-colors`}
+              >
               <ChevronLeft className="h-6 w-6" />
             </button>
             <button
               onClick={() => scroll('right')}
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-surface/80 p-2 rounded-full backdrop-blur-sm hover:bg-primary/20 transition-colors"
+              className={`${expanded ? "hidden" : ""}absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-surface/80 p-2 rounded-full backdrop-blur-sm hover:bg-primary/20 transition-colors`}
             >
               <ChevronRight className="h-6 w-6" />
             </button>
