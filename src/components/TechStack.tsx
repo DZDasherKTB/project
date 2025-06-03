@@ -106,11 +106,11 @@ const TechStack: React.FC = () => {
               className="overflow-x-auto hide-scrollbar"
               style={{ scrollbarWidth: 'none' }}
             >
-              <div className={`flex gap-6 pb-4 ${expanded ? 'flex-wrap' : 'flex-nowrap'}`}>
+              <div className={`flex gap-6 pb-4 ${expanded ? "flex-wrap w-full" : "flex-nowrap w-max"} overflow-y-hidden`}>
                 {filteredTech.map((tech, index) => (
                   <FadeInSection key={tech.name} delay={index * 0.1}>
                     <motion.div
-                      className="cyberpunk-card flex flex-col items-center justify-center text-center h-56 min-w-[240px]"
+                      className="cyberpunk-card flex flex-col items-center justify-center text-center h-56 min-w-[240px] w-[280px]"
                       whileHover={{
                         y: -10,
                         scale: 1.02,
