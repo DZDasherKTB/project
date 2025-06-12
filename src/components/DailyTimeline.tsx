@@ -220,8 +220,8 @@ const DailyTimeline: React.FC = () => {
             {calendarDays.map((day) => (
               <motion.div
                 key={day.date}
-                className={`aspect-square rounded-lg
-                ${day.isHoliday ? 'bg-[#4a00004d] hover:bg-[#4a000090]': day.hasActivity 
+                className={`aspect-square rounded-lg 
+                ${day.isHoliday ? 'bg-[#4a00004d] hover:bg-[#4a000090] cursor-pointer': day.hasActivity 
                   ? 'bg-primary/20 cursor-pointer hover:bg-primary/30' 
                   : 'bg-surface-light'
                 } ${
