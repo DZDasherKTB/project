@@ -221,7 +221,7 @@ const DailyTimeline: React.FC = () => {
               <motion.div
                 key={day.date}
                 className={`aspect-square rounded-lg 
-                ${day.isHoliday ? 'bg-[#83b9f65f] hover:bg-[#83b9f682] cursor-pointer': day.hasActivity 
+                ${day.isHoliday ? 'bg-[#6a75e857] hover:bg-[#6a75e872] cursor-pointer': day.hasActivity 
                   ? 'bg-primary/20 cursor-pointer hover:bg-primary/30' 
                   : 'bg-surface-light'
                 } ${
@@ -231,7 +231,7 @@ const DailyTimeline: React.FC = () => {
                   day.isHoliday
                     ? {
                         scale: 1.02,
-                        boxShadow: '0 0 15px rgba(131, 185, 246, 0.80)',
+                        boxShadow: '0 0 15px rgba(106,117,232,0.64)',
                       }
                     : day.hasActivity
                     ? {
@@ -244,13 +244,13 @@ const DailyTimeline: React.FC = () => {
                 >
                 <span className={`
                   group-hover:${day.hasActivity ? 'scale-110' : ''}
-                  ${day.isHoliday ? 'text-cyan-200': day.hasActivity ? 'text-primary font-bold' : ''}
+                  ${day.isHoliday ? 'text-cyan-100': day.hasActivity ? 'text-primary font-bold' : ''}
                   transition-transform duration-300
                 `}>
                   {day.day}
                 </span>
                 {day.hasActivity && (
-                  <div className={`absolute top-1 right-1 w-2 h-2 rounded-full animate-pulse ${day.isHoliday ? 'bg-cyan-200': 'bg-primary'
+                  <div className={`absolute top-1 right-1 w-2 h-2 rounded-full animate-pulse ${day.isHoliday ? 'bg-cyan-100': 'bg-primary'
                 }`} />
                 )}
               </motion.div>
