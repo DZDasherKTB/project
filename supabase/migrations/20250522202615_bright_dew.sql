@@ -41,7 +41,8 @@ CREATE TABLE IF NOT EXISTS activities (
   description text,
   category text,
   icon text,
-  created_at timestamptz DEFAULT now()
+  created_at timestamptz DEFAULT now(),
+  holiday boolean
 );
 
 ALTER TABLE activities ENABLE ROW LEVEL SECURITY;

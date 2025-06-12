@@ -6,6 +6,7 @@ export interface Activity {
   category: string;
   icon: string;
   created_at: string;
+  holiday: boolean;
 }
 
 export interface Project {

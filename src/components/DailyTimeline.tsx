@@ -151,14 +151,15 @@ const DailyTimeline: React.FC = () => {
     for (let i = 1; i <= daysInMonth; i++) {
       const date = new Date(year, month, i);
       const dateString = formatDateToLocalYYYYMMDD(date);
+      const activity = activityDates[dateString];
       const hasActivity = activityDates[dateString] !== undefined;
-      
       days.push({
         day: i,
         date: dateString,
         hasActivity,
         activity: hasActivity ? activityDates[dateString] : null,
-        isToday: date.toDateString() === today.toDateString()
+        isToday: date.toDateString() === today.toDateString(),
+        isHoliday: hasActivity ? activity.holiday === true : false  // <-- NEW LINE
       });
     }
     
@@ -223,24 +224,36 @@ const DailyTimeline: React.FC = () => {
                   day.hasActivity 
                     ? 'bg-primary/20 cursor-pointer hover:bg-primary/30' 
                     : 'bg-surface-light'
+                }  ${day.isHoliday ? 'bg-[#4a00008f] hover:bg-[#4a0000d9]': ''
                 } ${
                   day.isToday ? 'border-2 border-primary' : ''
                 } flex items-center justify-center relative group transition-all duration-300`}
-                whileHover={day.hasActivity ? { 
-                  scale: 1.05,
-                  boxShadow: '0 0 15px rgba(176, 38, 255, 0.3)'
-                } : {}}
+                whileHover={
+                  day.isHoliday
+                    ? {
+                        scale: 1.02,
+                        boxShadow: '0 0 15px rgba(74, 0, 0, 0.80)',
+                      }
+                    : day.hasActivity
+                    ? {
+                        scale: 1.05,
+                        boxShadow: '0 0 15px rgba(176, 38, 255, 0.3)',
+                      }
+                    : undefined
+                }                
                 onClick={() => setSelectedActivities(activities.filter(a => a.date === day.date))}
                 >
                 <span className={`
-                  ${day.hasActivity ? 'text-primary font-bold' : ''}
+                  ${day.hasActivity ? 'text-primary font-bold' : '' }
                   group-hover:${day.hasActivity ? 'scale-110' : ''}
+                  ${day.isHoliday ? 'text-red-700': ''}
                   transition-transform duration-300
                 `}>
                   {day.day}
                 </span>
                 {day.hasActivity && (
-                  <div className="absolute top-1 right-1 w-2 h-2 rounded-full bg-primary animate-pulse" />
+                  <div className={`absolute top-1 right-1 w-2 h-2 rounded-full animate-pulse ${day.isHoliday ? 'bg-red-700': 'bg-primary'
+                }`} />
                 )}
               </motion.div>
             ))}
@@ -249,7 +262,7 @@ const DailyTimeline: React.FC = () => {
           <div className="mt-8 border-t border-surface-light pt-6">
             <h4 className="text-xl font-display font-bold mb-4">Recent Activities</h4>
             <div className="space-y-3">
-              {activities.slice(0, visibleCount).map((activity) => (
+              {activities.filter(activity => !activity.holiday).slice(0, visibleCount).map((activity) => (
                 <motion.div
                   key={activity.id}
                   className="flex gap-3 p-3 bg-surface-light rounded-lg cursor-pointer hover:bg-primary/10 transition-all duration-300"
