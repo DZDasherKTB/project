@@ -243,9 +243,8 @@ const DailyTimeline: React.FC = () => {
                 onClick={() => setSelectedActivities(activities.filter(a => a.date === day.date))}
                 >
                 <span className={`
-                  ${day.hasActivity ? 'text-primary font-bold' : '' }
                   group-hover:${day.hasActivity ? 'scale-110' : ''}
-                  ${day.isHoliday ? 'text-cyan-200': ''}
+                  ${day.isHoliday ? 'text-cyan-200': day.hasActivity ? 'text-primary font-bold' : ''}
                   transition-transform duration-300
                 `}>
                   {day.day}
