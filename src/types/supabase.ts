@@ -13,6 +13,7 @@ export interface Project {
   id: string;
   title: string;
   description: string;
+  short_description: string;
   tags: string[];
   image_url: string;
   demo_link?: string;
@@ -24,6 +25,7 @@ export interface MiniProject {
   id: string;
   title: string;
   description: string;
+  short_description: string;
   tags: string[];
   image_url: string;
   demo_link?: string;

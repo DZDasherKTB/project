@@ -43,7 +43,7 @@ const MiniProjectCard: React.FC<MiniProjectCardProps> = ({ project, index }) => 
             </h3>
 
             <p className="text-text-secondary mb-2 line-clamp-2 opacity-90">
-              {project.description}
+              {project.short_description}
             </p>
 
             <div className="flex flex-wrap gap-2 mb-4">
