@@ -132,9 +132,10 @@ const MiniProjectCard: React.FC<MiniProjectCardProps> = ({ project, index }) => 
                 </h3>
 
                 {/* Description */}
-                <div className="bg-white/10 text-text-secondary text-sm leading-relaxed p-4 rounded-lg shadow-inner mb-5 max-h-[300px] overflow-y-auto">
-                  {project.description}
-                </div>
+                <div
+                  className="bg-white/10 text-text-secondary text-sm leading-relaxed p-4 rounded-lg shadow-inner mb-5 max-h-[300px] overflow-y-auto"
+                  dangerouslySetInnerHTML={{ __html: project.description }}
+                />
 
                 {/* Tags */}
                 {project.tags.length > 0 && (

@@ -133,9 +133,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
                 {/* Frosted Description */}
                 <div
                   className="bg-white/10 text-text-secondary text-sm leading-relaxed p-4 rounded-lg shadow-inner mb-5 max-h-[300px] overflow-y-auto"
-                >
-                  {project.description}
-                </div>
+                  dangerouslySetInnerHTML={{ __html: project.description }}
+                />
 
                 {/* Tags */}
                 {project.tags.length > 0 && (
