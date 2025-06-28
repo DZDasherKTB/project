@@ -29,30 +29,38 @@ export const skills: Skill[] = [
     name: "Cyber Security",
     icon: "Shield",
     category: "Security",
-    level: 25,
+    level: 15, // lowered
+  },
+  {
+    id: "machine-learning",
+    name: "Machine Learning",
+    icon: "Activity",
+    category: "AI",
+    level: 85, // based on your from-scratch ML work
   },
   {
     id: "deep-learning",
     name: "Deep Learning",
     icon: "Brain",
     category: "AI",
-    level: 30,
+    level: 50, // basic to intermediate understanding
   },
   {
     id: "devops",
     name: "DevOps",
     icon: "Settings2",
     category: "Infrastructure",
-    level: 50,
+    level: 45, // fair knowledge of CI/CD, deployment
   },
   {
-  id: "system-integration",
-  name: "System Integration",
-  icon: "Puzzle",
-  category: "Engineering",
-  level: 70,
-},
+    id: "system-integration",
+    name: "System Integration",
+    icon: "Puzzle",
+    category: "Engineering",
+    level: 70, // good understanding from full-stack + Supabase integrations
+  },
 ];
+
 
 export const techStack: TechItem[] = [
     { name: "Python", icon: "Python", category: "language" },
