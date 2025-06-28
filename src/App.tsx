@@ -1,19 +1,21 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, lazy, Suspense } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-import Skills from './components/Skills';
-import About from './components/About';
-import DailyTimeline from './components/DailyTimeline';
-import Projects from './components/Projects';
-import TechStack from './components/TechStack';
-import Experience from './components/Experience';
-import Contact from './components/Contact';
-import Footer from './components/Footer';
-import CogwheelEffect from './components/ui/CogwheelEffect';
-import FloatingImages from './components/ui/FloatingImages';
 import AuthPopup from './components/AuthPopup';
-import { useState } from 'react';
+import Footer from './components/Footer';
 import { supabase } from './lib/supabase';
+import GlobalSkeleton from './components/ui/GlobalSkeleton';
+
+// Lazy-loaded components
+const Skills = lazy(() => import('./components/Skills'));
+const About = lazy(() => import('./components/About'));
+const DailyTimeline = lazy(() => import('./components/DailyTimeline'));
+const Projects = lazy(() => import('./components/Projects'));
+const TechStack = lazy(() => import('./components/TechStack'));
+const Experience = lazy(() => import('./components/Experience'));
+const Contact = lazy(() => import('./components/Contact'));
+const CogwheelEffect = lazy(() => import('./components/ui/CogwheelEffect'));
+const FloatingImages = lazy(() => import('./components/ui/FloatingImages'));
 
 function App() {
   const [showPopup, setShowPopup] = useState(false);
@@ -40,18 +42,26 @@ function App() {
       <div className="min-h-screen bg-background text-text-primary overflow-x-hidden">
         <Navbar />
         <AuthPopup show={showPopup} />
-        <CogwheelEffect />
-        <FloatingImages />
+
+        {/* Defer visual effects */}
+        <Suspense fallback={null}>
+          <CogwheelEffect />
+          <FloatingImages />
+        </Suspense>
 
         <main>
           <Hero />
-          <Skills />
-          <About />
-          <DailyTimeline />
-          <TechStack />
-          <Projects />
-          <Experience />
-          <Contact />
+
+          {/* Skeleton loader until components load */}
+          <Suspense fallback={<GlobalSkeleton />}>
+            <Skills />
+            <About />
+            <DailyTimeline />
+            <TechStack />
+            <Projects />
+            <Experience />
+            <Contact />
+          </Suspense>
         </main>
 
         <Footer />

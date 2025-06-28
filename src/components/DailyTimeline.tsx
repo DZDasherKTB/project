@@ -63,7 +63,10 @@ const ActivityLog: React.FC<ActivityLogProps> = ({ activity, activities, onClose
               </div>
             </div>
 
-            <p className="text-text-secondary mb-4">{activity.description}</p>
+            <div
+  className="text-text-secondary mb-4"
+  dangerouslySetInnerHTML={{ __html: activity.description }}
+/>
 
             {index === activityList.length - 1 && (
               <div className="pt-4 border-t border-surface-light">
