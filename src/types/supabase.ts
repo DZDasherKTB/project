@@ -20,6 +20,17 @@ export interface Project {
   featured: boolean;
   created_at: string;
 }
+export interface MiniProject {
+  id: string;
+  title: string;
+  description: string;
+  tags: string[];
+  image_url: string;
+  demo_link?: string;
+  code_link?: string;
+  featured: boolean;
+  created_at: string;
+}
 
 export interface Message {
   id: string;

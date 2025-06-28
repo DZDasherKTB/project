@@ -3,21 +3,22 @@ import { motion, AnimatePresence } from 'framer-motion';
 import FadeInSection from './ui/FadeInSection';
 import { ExternalLink, Github } from 'lucide-react';
 import { supabase } from '../lib/supabase';
-import type { Project } from '../types/supabase';
+import type { mini_projects } from '../types/supabase';
 
-interface ProjectCardProps {
-  project: Project;
+interface MiniProjectCardProps {
+  project: mini_projects;
   index: number;
 }
 
-const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
-  const [isHovered, setIsHovered] = useState(false);
+const MiniProjectCard: React.FC<MiniProjectCardProps> = ({ project, index }) => {
   const [showModal, setShowModal] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+
 
   return (
     <>
       <FadeInSection delay={index * 0.1}>
-      <motion.div
+        <motion.div
           role="button"
           tabIndex={0}
           onClick={() => setShowModal(true)}
@@ -37,7 +38,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
 
           {/* Content */}
           <div className="absolute inset-0 z-20 p-6 flex flex-col justify-end">
-            <h3 className="text-2xl font-display font-bold mb-2">{project.title}</h3>
+            <h3 className="text-2xl font-display font-bold mb-2 group-hover:text-accent transition-all duration-200">
+              {project.title}
+            </h3>
 
             <p className="text-text-secondary mb-2 line-clamp-2 opacity-90">
               {project.description}
@@ -47,7 +50,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
               {project.tags.map((tag) => (
                 <span 
                   key={tag} 
-                  className="text-xs bg-primary/20 text-primary px-2 py-1 rounded"
+                  className="text-xs bg-primary/20 text-primary px-2 py-1 rounded hover:bg-primary/30 transition-all"
                 >
                   {tag}
                 </span>
@@ -88,6 +91,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
         </motion.div>
       </FadeInSection>
 
+
       {/* Modal */}
       <AnimatePresence>
         {showModal && (
@@ -113,7 +117,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
                 className="absolute inset-0 w-full h-full object-cover opacity-30 blur-sm"
               />
               <div className="relative z-10 p-6 sm:p-8 bg-background/60 backdrop-blur-xl rounded-2xl">
-
                 {/* Close Button */}
                 <button
                   onClick={() => setShowModal(false)}
@@ -122,18 +125,14 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
                 >
                   ✕
                 </button>
+
                 {/* Title */}
-                <h3
-                  className="font-display text-3xl sm:text-4xl font-bold tracking-wide text-primary mb-6 transition-all duration-700 hover:tracking-widest hover:text-accent"
-                >
+                <h3 className="font-display text-3xl sm:text-4xl font-bold tracking-wide text-primary mb-6 transition-all duration-700 hover:tracking-widest hover:text-accent">
                   {project.title}
                 </h3>
 
-
-                {/* Frosted Description */}
-                <div
-                  className="bg-white/10 text-text-secondary text-sm leading-relaxed p-4 rounded-lg shadow-inner mb-5 max-h-[300px] overflow-y-auto"
-                >
+                {/* Description */}
+                <div className="bg-white/10 text-text-secondary text-sm leading-relaxed p-4 rounded-lg shadow-inner mb-5 max-h-[300px] overflow-y-auto">
                   {project.description}
                 </div>
 
@@ -163,7 +162,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
                       Live Demo
                     </a>
                   )}
-
                   {project.code_link && (
                     <a
                       href={project.code_link}
@@ -175,75 +173,57 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
                     </a>
                   )}
                 </div>
-
               </div>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* End Modal */}
     </>
   );
 };
 
-const Projects: React.FC = () => {
+const MiniProjects: React.FC = () => {
+  const [miniProjects, setMiniProjects] = useState<mini_projects[]>([]);
   const [loading, setLoading] = useState(true);
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
-    const fetchProjects = async () => {
+    const fetchMiniProjects = async () => {
       const { data, error } = await supabase
-        .from('projects')
+        .from('mini_projects')
         .select('*')
         .order('created_at', { ascending: false });
 
       if (error) {
-        console.error('Error fetching projects:', error);
+        console.error('Error fetching mini projects:', error);
       } else {
-        setProjects(data ?? []);
+        setMiniProjects(data ?? []);
       }
 
       setLoading(false);
     };
 
-    fetchProjects();
+    fetchMiniProjects();
   }, []);
 
-  const displayedProjects = showAll
-    ? projects
-    : projects.filter((p) => p.featured).slice(0, 5);
-
   return (
-    <section id="projects" className="section-container">
+    <section id="mini-projects" className="section-container mt-20">
       <FadeInSection>
-        <h2 className="section-title neon-text">Projects</h2>
+        <h2 className="section-title neon-text">Mini Projects</h2>
       </FadeInSection>
 
       {loading ? (
-        <div className="text-center mt-12">Loading...</div>
+        <div className="text-center py-12">Loading mini projects...</div>
       ) : (
-        <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
-            <AnimatePresence>
-              {displayedProjects.map((project, index) => (
-                <ProjectCard key={project.id} project={project} index={index} />
-              ))}
-            </AnimatePresence>
-          </div>
-
-          {!showAll && projects.length > 5 && (
-            <div className="flex justify-center mt-12">
-              <button className="cyberpunk-button" onClick={() => setShowAll(true)}>
-                Show More
-              </button>
-            </div>
-          )}
-        </>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
+          <AnimatePresence>
+            {miniProjects.map((project, index) => (
+              <MiniProjectCard key={project.id} project={project} index={index} />
+            ))}
+          </AnimatePresence>
+        </div>
       )}
     </section>
   );
 };
 
-export default Projects;
+export default MiniProjects;

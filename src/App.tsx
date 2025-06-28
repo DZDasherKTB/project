@@ -11,6 +11,7 @@ const Skills = lazy(() => import('./components/Skills'));
 const About = lazy(() => import('./components/About'));
 const DailyTimeline = lazy(() => import('./components/DailyTimeline'));
 const Projects = lazy(() => import('./components/Projects'));
+const MiniProjects = lazy(() => import('./components/MiniProjects'));
 const TechStack = lazy(() => import('./components/TechStack'));
 const Experience = lazy(() => import('./components/Experience'));
 const Contact = lazy(() => import('./components/Contact'));
@@ -59,6 +60,7 @@ function App() {
             <DailyTimeline />
             <TechStack />
             <Projects />
+            <MiniProjects />
             <Experience />
             <Contact />
           </Suspense>
