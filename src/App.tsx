@@ -1,12 +1,14 @@
 import React, { useEffect, useState, lazy, Suspense } from 'react';
-import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import AuthPopup from './components/AuthPopup';
-import Footer from './components/Footer';
 import { supabase } from './lib/supabase';
+import AuthPopup from './components/AuthPopup';
+import Preloader from './components/ui/Preloader';
+import SectionLoader from './components/ui/SectionLoader';
 import GlobalSkeleton from './components/ui/GlobalSkeleton';
 
-// Lazy-loaded components
+import Hero from './components/Hero';
+const Navbar = lazy(() => import('./components/Navbar'));
+const Footer = lazy(() => import('./components/Footer'));
+
 const Skills = lazy(() => import('./components/Skills'));
 const About = lazy(() => import('./components/About'));
 const DailyTimeline = lazy(() => import('./components/DailyTimeline'));
@@ -20,59 +22,70 @@ const FloatingImages = lazy(() => import('./components/ui/FloatingImages'));
 
 function App() {
   const [showPopup, setShowPopup] = useState(false);
+  const [deferLoad, setDeferLoad] = useState(false);
+  const [showPreloader, setShowPreloader] = useState(true);
 
   useEffect(() => {
     document.title = "Dashpreet Singh | Portfolio";
 
+    const preloadTimer = setTimeout(() => setShowPreloader(false), 1500);
+    const delayTimer = setTimeout(() => setDeferLoad(true), 800);
+
     const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log("Auth event:", event);
       if (event === "SIGNED_IN") {
         setShowPopup(true);
         setTimeout(() => setShowPopup(false), 3000);
-        console.log("User signed in:", session?.user?.email);
       }
     });
 
     return () => {
+      clearTimeout(preloadTimer);
+      clearTimeout(delayTimer);
       authListener.subscription.unsubscribe();
     };
   }, []);
 
-  try {
-    return (
-      <div className="min-h-screen bg-background text-text-primary overflow-x-hidden">
+  useEffect(() => {
+    document.body.style.overflow = showPreloader ? 'hidden' : '';
+  }, [showPreloader]);
+
+  if (showPreloader) return <Preloader />;
+
+  return (
+    <div className="min-h-screen bg-background text-text-primary overflow-x-hidden">
+      <Suspense fallback={<GlobalSkeleton />}>
         <Navbar />
-        <AuthPopup show={showPopup} />
+      </Suspense>
 
-        {/* Defer visual effects */}
-        <Suspense fallback={null}>
-          <CogwheelEffect />
-          <FloatingImages />
-        </Suspense>
+      <AuthPopup show={showPopup} />
 
-        <main>
-          <Hero />
+      <main>
+        <Hero />
 
-          {/* Skeleton loader until components load */}
-          <Suspense fallback={<GlobalSkeleton />}>
-            <Skills />
-            <About />
-            <DailyTimeline />
-            <TechStack />
-            <Projects />
-            <MiniProjects />
-            <Experience />
-            <Contact />
+        <SectionLoader><Skills /></SectionLoader>
+        <SectionLoader><About /></SectionLoader>
+        <SectionLoader><DailyTimeline /></SectionLoader>
+        <SectionLoader><TechStack /></SectionLoader>
+        <SectionLoader><Projects /></SectionLoader>
+        <SectionLoader><MiniProjects /></SectionLoader>
+        <SectionLoader><Experience /></SectionLoader>
+        <SectionLoader><Contact /></SectionLoader>
+      </main>
+
+      {deferLoad && (
+        <SectionLoader>
+          <Suspense fallback={null}>
+            <CogwheelEffect />
+            <FloatingImages />
           </Suspense>
-        </main>
+        </SectionLoader>
+      )}
 
+      <Suspense fallback={<GlobalSkeleton />}>
         <Footer />
-      </div>
-    );
-  } catch (e) {
-    console.error("App crash:", e);
-    return <div style={{ color: 'red', padding: '2rem' }}>App crashed — check console</div>;
-  }
+      </Suspense>
+    </div>
+  );
 }
 
 export default App;
