@@ -1,7 +1,7 @@
 import React, { useEffect, useState, lazy, Suspense } from 'react';
 import { supabase } from './lib/supabase';
 import AuthPopup from './components/AuthPopup';
-import Preloader from './components/ui/Preloader';
+import Preloader from './components/ui/PreLoader';
 import SectionLoader from './components/ui/SectionLoader';
 import GlobalSkeleton from './components/ui/GlobalSkeleton';
 
